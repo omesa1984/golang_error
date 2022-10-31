@@ -1,13 +1,10 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 	"log"
 	"math"
 )
-
-var ErrNorgateMath = errors.New("norgate math: square root of negative number")
 
 func main() {
 	var f float64 = -10
@@ -21,7 +18,7 @@ func main() {
 
 func sqrt(f float64) (float64, error) {
 	if f < 0 {
-		return 0, ErrNorgateMath
+		return 0, fmt.Errorf("norgate math: square root of negative number: %v", f)
 	}
 	return math.Sqrt(f), nil
 }
