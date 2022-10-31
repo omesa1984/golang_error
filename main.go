@@ -1,31 +1,25 @@
 package main
 
 import (
+	"errors"
 	"fmt"
+	"log"
+	"math"
 )
 
 func main() {
-	f()
-	fmt.Println("Returned normally from f.")
-}
-
-func f() {
-	defer func() {
-		if r := recover(); r != nil {
-			fmt.Println("Recovered in f", r)
-		}
-	}()
-	fmt.Println("Calling g.")
-	g(0)
-	fmt.Println("Returned normally from g.")
-}
-
-func g(i int) {
-	if i > 3 {
-		fmt.Println("Panicking!")
-		panic(fmt.Sprintf("%v", i))
+	var f float64 = -10
+	v, err := sqrt(f)
+	if err != nil {
+		log.Fatalln(err)
+	} else {
+		fmt.Println("O valor da raiz de: ", f, " é ", v)
 	}
-	defer fmt.Println("Defer in g", i)
-	fmt.Println("Printing in g", i)
-	g(i + 1)
+}
+
+func sqrt(f float64) (float64, error) {
+	if f < 0 {
+		return 0, errors.New("norgate math: square root of negative number")
+	}
+	return math.Sqrt(f), nil
 }
