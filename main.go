@@ -1,27 +1,31 @@
 package main
 
 import (
-	"log"
-	"os"
+	"fmt"
 )
 
 func main() {
-	_, err := os.Open("no-file.txt")
-	if err != nil {
-		//		fmt.Println("err happened", err)
-		//		log.Println("err happened", err)
-		//		log.Fatalln(err)
-		log.Panicln(err)
-		//		panic(err)
-	}
+	f()
+	fmt.Println("Returned normally from f.")
 }
 
-/*
-Panicln is equivalent to Println() followed by a
-call to panic()
-*/
+func f() {
+	defer func() {
+		if r := recover(); r != nil {
+			fmt.Println("Recovered in f", r)
+		}
+	}()
+	fmt.Println("Calling g.")
+	g(0)
+	fmt.Println("Returned normally from g.")
+}
 
-/*
-Fatalln is equivalent to Println() followed by
-call to os.Exit(1)
-*/
+func g(i int) {
+	if i > 3 {
+		fmt.Println("Panicking!")
+		panic(fmt.Sprintf("%v", i))
+	}
+	defer fmt.Println("Defer in g", i)
+	fmt.Println("Printing in g", i)
+	g(i + 1)
+}
