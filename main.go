@@ -1,28 +1,34 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 )
 
 func main() {
-	_, err := os.Open("no-file.txt")
+	f, err := os.Create("log.txt")
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	defer f.Close()
+	log.SetOutput(f)
+
+	f2, err := os.Open("no-file.txt")
 	if err != nil {
 		//fmt.Println("err happened", err)
 		log.Println("err happened", err)
 		//		log.Fatalln(err)
 		//		panic(err)
 	}
+	defer f2.Close()
+
+	fmt.Println("check the log.txt file in the directory")
 }
 
 /*
-Package log implements a simple logging package
-writes to standard error and prints the date and
-time of each logged message
-*/
-
-/*
-log.Println calls Output to print to the standard
+Println calls Output to print to the standard
 logger. Arguments are handled in the manner of
-fmt.Println.
+fmt.Println
 */
