@@ -7,28 +7,21 @@ import (
 )
 
 func main() {
-	f, err := os.Create("log.txt")
+	defer foo()
+	_, err := os.Open("no-file.txt")
 	if err != nil {
-		fmt.Println(err)
-	}
-
-	defer f.Close()
-	log.SetOutput(f)
-
-	f2, err := os.Open("no-file.txt")
-	if err != nil {
-		//fmt.Println("err happened", err)
-		log.Println("err happened", err)
-		//		log.Fatalln(err)
+		//		fmt.Println("err happened", err)
+		//		log.Println("err happened", err)
+		log.Fatalln(err)
 		//		panic(err)
 	}
-	defer f2.Close()
+}
 
-	fmt.Println("check the log.txt file in the directory")
+func foo() {
+	fmt.Println("When os.Exit(1) is called, deferred functions don't run")
 }
 
 /*
-Println calls Output to print to the standard
-logger. Arguments are handled in the manner of
-fmt.Println
+... the Fatal functions call os.Exit(1) after
+writing the log message ...
 */
