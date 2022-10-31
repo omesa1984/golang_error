@@ -1,27 +1,27 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 )
 
 func main() {
-	defer foo()
 	_, err := os.Open("no-file.txt")
 	if err != nil {
 		//		fmt.Println("err happened", err)
 		//		log.Println("err happened", err)
-		log.Fatalln(err)
+		//		log.Fatalln(err)
+		log.Panicln(err)
 		//		panic(err)
 	}
 }
 
-func foo() {
-	fmt.Println("When os.Exit(1) is called, deferred functions don't run")
-}
+/*
+Panicln is equivalent to Println() followed by a
+call to panic()
+*/
 
 /*
-... the Fatal functions call os.Exit(1) after
-writing the log message ...
+Fatalln is equivalent to Println() followed by
+call to os.Exit(1)
 */
