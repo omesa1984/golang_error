@@ -1,45 +1,32 @@
+// - ...use o struct sqrt.Error como valor do tipo erro.
 package main
 
 import (
 	"fmt"
 	"log"
-	"math"
 )
 
-type norgateMathError struct {
-	menor0 bool
-	err    error
+type sqrtError struct {
+	lat  string
+	long string
+	err  error
 }
 
-func (n norgateMathError) Error() string {
-	return fmt.Sprintf("a norgate math error ocurred: \n O núero é < 0:  %v \n %v", n.menor0, n.err)
+func (se sqrtError) Error() string {
+	return fmt.Sprintf("math error: %v %v %v", se.lat, se.long, se.err)
 }
 
 func main() {
-	var f float64 = 10
-
-	v, err := sqrt(f)
+	_, err := sqrt(-10.23)
 	if err != nil {
-		n := norgateMathError{false, nil}
-		MenorMaior(f, n)
 		log.Println(err)
-	} else {
-		fmt.Println("O valor da raiz de: ", f, " é ", v)
-	}
-}
-
-func MenorMaior(f float64, n norgateMathError) {
-	if f < 0 {
-		n.menor0 = true
-	} else {
-		n.menor0 = false
 	}
 }
 
 func sqrt(f float64) (float64, error) {
 	if f < 0 {
-		nme := fmt.Errorf("norgate math redux: square root of negative number: %v", f)
-		return 0, norgateMathError{true, nme}
+		errNovo := fmt.Errorf("Deu erro no valor: %v", f)
+		return 0, sqrtError{"", "", errNovo}
 	}
-	return math.Sqrt(f), nil
+	return 42, nil
 }
